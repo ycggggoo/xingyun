@@ -1,0 +1,30 @@
+name: Master Push - Build & Deploy
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  backend:
+    uses: ycggggoo/.github/.github/workflows/docker-build-push.yml@master
+    with:
+      image-name: ycggggoo/xingyun-api
+      dockerfile: deploy/Dockerfile.api
+      context: .
+      java-version: '21'
+      maven-module: xingyun-api
+    secrets:
+      GHCR_PAT: ${{ secrets.GHCR_PAT }}
+
+  deploy:
+    needs: backend
+    uses: ycggggoo/.github/.github/workflows/ssh-deploy.yml@master
+    with:
+      image-name: ghcr.io/ycggggoo/xingyun-api
+      container-name: xingyun-api
+      compose-file: docker-compose.app.yml
+      deploy-dir: /data/xingyun-erp
+      health-url: http://localhost:8080/actuator/health
+    secrets:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
