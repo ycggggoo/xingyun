@@ -4,6 +4,10 @@ on:
   push:
     branches: [master]
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   backend:
     uses: ycggggoo/.github/.github/workflows/docker-build-push.yml@master
