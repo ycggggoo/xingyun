@@ -369,17 +369,13 @@
     </select>
     <sql id="SupplierProductFilter_sql">
         <if test="supplierId != null and supplierId != ''">
-            AND (NOT EXISTS (
-                SELECT 1 FROM base_data_supplier_product sp
-                WHERE sp.supplier_id = #{supplierId}
-                  AND sp.available = TRUE
-            ) OR EXISTS (
+            AND EXISTS (
                 SELECT 1 FROM base_data_supplier_product sp
                 WHERE sp.supplier_id = #{supplierId}
                   AND sp.product_id = g.id
                   AND (sp.sku_id IS NULL OR sp.sku_id = s.id)
                   AND sp.available = TRUE
-            ))
+            )
         </if>
     </sql>
     <select id="queryPurchaseByCondition" resultMap="PurchaseProductDto">
