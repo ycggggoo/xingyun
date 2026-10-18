@@ -4,6 +4,7 @@ import com.lframework.starter.web.core.annotations.locker.EnableLock;
 import com.lframework.starter.web.core.annotations.locker.LockType;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import java.util.TimeZone;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.boot.SpringApplication;
@@ -19,6 +20,8 @@ import org.springframework.context.annotation.Configuration;
 public class XingYunApiApplication {
 
   public static void main(String[] args) {
+    // 入库、审核及公共审计字段使用北京时间，不依赖宿主机或容器的默认时区。
+    TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
     SpringApplication.run(XingYunApiApplication.class, args);
   }
 
