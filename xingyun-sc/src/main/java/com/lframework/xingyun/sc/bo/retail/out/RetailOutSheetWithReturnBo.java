@@ -1,6 +1,5 @@
 package com.lframework.xingyun.sc.bo.retail.out;
 
-import com.lframework.starter.common.functions.SFunction;
 import com.lframework.starter.common.utils.CollectionUtil;
 import com.lframework.starter.common.utils.NumberUtil;
 import com.lframework.starter.common.utils.StringUtil;
@@ -239,20 +238,6 @@ public class RetailOutSheetWithReturnBo extends BaseBo<RetailOutSheetWithReturnD
     public DetailBo(RetailOutSheetWithReturnDto.SheetDetailDto dto) {
 
       super(dto);
-    }
-
-    @Override
-    public BaseBo<RetailOutSheetWithReturnDto.SheetDetailDto> convert(
-        RetailOutSheetWithReturnDto.SheetDetailDto dto) {
-
-      return this;
-    }
-
-    @Override
-    public <A> BaseBo<RetailOutSheetWithReturnDto.SheetDetailDto> convert(
-        RetailOutSheetWithReturnDto.SheetDetailDto dto, SFunction<A, ?>... columns) {
-
-      return this;
     }
 
     @Override

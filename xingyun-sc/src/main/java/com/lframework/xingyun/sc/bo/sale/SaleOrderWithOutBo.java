@@ -1,6 +1,5 @@
 package com.lframework.xingyun.sc.bo.sale;
 
-import com.lframework.starter.common.functions.SFunction;
 import com.lframework.starter.common.utils.CollectionUtil;
 import com.lframework.starter.common.utils.NumberUtil;
 import com.lframework.starter.common.utils.StringUtil;
@@ -252,19 +251,6 @@ public class SaleOrderWithOutBo extends BaseBo<SaleOrderWithOutDto> {
     public DetailBo(SaleOrderWithOutDto.DetailDto dto) {
 
       super(dto);
-    }
-
-    @Override
-    public BaseBo<SaleOrderWithOutDto.DetailDto> convert(SaleOrderWithOutDto.DetailDto dto) {
-
-      return this;
-    }
-
-    @Override
-    public <A> BaseBo<SaleOrderWithOutDto.DetailDto> convert(SaleOrderWithOutDto.DetailDto dto,
-        SFunction<A, ?>... columns) {
-
-      return this;
     }
 
     @Override
