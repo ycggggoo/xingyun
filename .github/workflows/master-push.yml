@@ -22,13 +22,37 @@ jobs:
 
   deploy:
     needs: backend
-    uses: ycggggoo/.github/.github/workflows/ssh-deploy.yml@master
-    with:
-      image-name: ghcr.io/ycggggoo/xingyun-api
-      container-name: xingyun-api
-      compose-file: docker-compose.app.yml
-      deploy-dir: /data/xingyun-erp
-      health-url: http://localhost:8080/actuator/health
-    secrets:
-      SSH_HOST: ${{ secrets.SSH_HOST }}
-      SSH_KEY: ${{ secrets.SSH_KEY }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: root
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            IMAGE=ghcr.io/ycggggoo/xingyun-api
+            TAG=${{ github.sha }}
+            DIR=/data/xingyun-erp
+
+            echo "=== Pull image: ${IMAGE}:${TAG} ==="
+            docker pull ${IMAGE}:${TAG}
+
+            echo "=== Tag as :local ==="
+            docker tag ${IMAGE}:${TAG} ${IMAGE}:local
+
+            echo "=== Redeploy ==="
+            cd ${DIR}
+            docker compose -f docker-compose.app.yml up -d --force-recreate xingyun-api
+
+            echo "=== Health check ==="
+            for i in 1 2 3 4 5 6 7 8; do
+              if docker exec xingyun-api curl -sf -m 5 http://localhost:8080/actuator/health; then
+                echo "OK"
+                exit 0
+              fi
+              echo "Waiting... ($i/8)"
+              sleep 15
+            done
+            echo "FAILED"
+            exit 1
